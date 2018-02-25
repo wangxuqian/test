@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+   <link href=" __ROOT__/static/css/bootstrap.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+
+<table cellpadding="10" cellspacing="0" width="666" border="1" class="table table-hover">
+    <tr>
+    <th>id号</th>
+    <th>姓名</th>
+    <th>密码</th>
+    <th>成绩</th>
+    <th>注册时间</th>
+    <th>操作</th>
+    </tr>
+    {volist name="data" id="vo"}
+    <tr>
+        <th>{$vo.userid}</th>
+        <th>{$vo.username}</th>
+        <th>{$vo.userpass}</th>
+        <th>{$vo.userscore}</th>
+        <th>{$vo.usertime}</th>
+        <th><a href="{:url('edit',['id'=>$vo['userid']])}">编辑</a><a href="{:url('delete',['id'=>$vo['userid']])}">删除</a></th>
+    </tr>
+    {/volist}
+</table>
+{$page}
+</body>
+</html>

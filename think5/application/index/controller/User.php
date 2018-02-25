@@ -2,6 +2,9 @@
 namespace app\index\controller;
 use think\Controller;
 use think\Db;
+use think\Request;
+use think\Session;
+
 class user extends Controller {
 	public function index(){
 //---------------------------------------添加一条数据返回影响行数
@@ -51,4 +54,91 @@ class user extends Controller {
 return $this->fetch('hellow',['name'=>'thinkphp']);
 
 	}
+	public function show(){
+	    //分页显示
+        $list = Db::table('user_test')->paginate(3);
+        //翻页条
+        $page = $list->render();
+        //分配数据
+        $this->assign('data', $list);
+        $this->assign('page', $page);
+	     return $this->fetch();
+    }
+
+
+
+    public function delete(Request $request){
+	    $id=$request->param('id');
+        try{
+            $res=Db::table('user_test')->delete($id);
+        }catch(\Exception $e){
+            $this->error($e.'删除失败','show');
+         }
+          $this->success('删除成功!','show');
+
+      }
+      public function edit(){
+	    if(empty($_POST)){
+	        $id=Request::instance()->param('id');
+	        $data=Db::table('user_test')->find($id);
+	        $this->assign('data',$data);
+	        return  $this->fetch();
+	        }else{
+            $res=Db::table('user_test')->update($_POST);
+            if($res>0){
+                $this->success('更新成功','show');
+            }else{
+                $this->error('更新失败','show');
+            }
+            }
+      }
+      public function login(Request $request){
+	    if(empty($_POST)){
+	       return $this->fetch();
+        }else {
+            $count=Db::table('user_test')->where($_POST)->count();
+          if($count==1){
+              $id=Db::table('user_test')->field('userid')->where($_POST)->find();
+              Session::set('id',$id['userid']);
+              Session::set('username',$request->post('username'));
+              $this->success('登陆成功','show');
+          }else{
+              $this->error('该账户不存在');
+          }
+            }
+      }
+    public function uploadd(){
+	       return $this->fetch();
+	}
+//	public function uploaddo(){
+//        $file = Request::instance()->file('pho');
+//        if($file){
+//            $info = $file->move(ROOT_PATH .'public/uploads');
+//            if($info){
+//                // 成功上传后 获取上传信息
+//                // 输出 jpg
+//                echo $info->getExtension();
+//            }else{
+//                // 上传失败获取错误信息
+//                echo $file->getError();
+//            }
+//        }
+//    }
+public function uploaddo(){
+        $files = Request::instance()->file('image');
+	    foreach ($files as $key=>$file){
+
+        // 移动到框架应用根目录/public/uploads/ 目录下
+            $info = $file->validate(['size'=>200000,'ext'=>'jpg,png,gif'])->move(ROOT_PATH .'public/uploads');
+        if($info){
+            // 成功上传后 获取上传信息
+            // 输出 jpg
+            echo 1;
+
+        }else{
+            // 上传失败获取错误信息
+           $this->error( $file->getError());
+        }
+    }
+}
 }

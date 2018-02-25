@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href=" __ROOT__/static/css/bootstrap.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<form action="{:url('edit')}" method="post" class="form-horizontal" role="form">
+        <div class="form-group">
+            <label for="firstname" class="col-sm-2 control-label">姓名</label>
+            <div class="col-sm-5">
+                <input type="text" name="username"  class="form-control" id="firstname" value="{$data.username}" placeholder="请输入名字">
+            </div>
+        </div>
+    <div class="form-group">
+        <label for="firstpass" class="col-sm-2 control-label">密码</label>
+        <div class="col-sm-5">
+            <input type="text" name="userpass"  class="form-control" id="firstpass" value="{$data.userpass}" placeholder="请输入密码">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="firstscore" class="col-sm-2 control-label">成绩</label>
+        <div class="col-sm-5">
+            <input type="text" name="userscore" id="firstscore" class="form-control" value="{$data.userscore}" placeholder="请输入成绩">
+        </div>
+    </div>
+
+
+    <input type="hidden" name="userid" value="{$data.userid}">
+
+    <p align="center"><input type="reset" class="btn btn-default" value="还原数据">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        <input class="btn btn-default" type="submit" value="更新数据"></p>
+</form>
+</body>
+</html>
+<script>
+</script>
