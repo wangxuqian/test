@@ -12,41 +12,49 @@
     <script type="text/javascript" src="__ROOT__/static/js/locales/bootstrap-datetimepicker.zh-TW.js" charset="UTF-8"></script>
 </head>
 <body>
-<form action="{:url('edit')}" method="post" class="form-horizontal" role="form">
+<form action="{:url('add')}" method="post" class="form-horizontal" role="form">
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label">姓名</label>
             <div class="col-sm-5">
-                <input type="text" name="username"  class="form-control" id="firstname" value="{$data.username}" placeholder="请输入名字">
+                <input type="text" name="username"  class="form-control" id="firstname" value="" placeholder="请输入名字">
             </div>
         </div>
     <div class="form-group">
         <label for="firstpass" class="col-sm-2 control-label">密码</label>
         <div class="col-sm-5">
-            <input type="text" name="userpass"  class="form-control" id="firstpass" value="{$data.userpass}" placeholder="请输入密码">
+            <input type="text" name="userpass"  class="form-control" id="firstpass" value="" placeholder="请输入密码">
         </div>
     </div>
     <div class="form-group">
         <label for="firstscore" class="col-sm-2 control-label">成绩</label>
         <div class="col-sm-5">
-            <input type="text" name="userscore" id="firstscore" class="form-control" value="{$data.userscore}" placeholder="请输入成绩">
+            <input type="text" name="userscore" id="firstscore" class="form-control" value="" placeholder="请输入成绩">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">部门</label>
+        <div class="col-sm-5">
+           <select name="dep_id">
+               <option value="1">生产</option>
+               <option value="2">销售</option>
+               <option value="1">管理</option>
+           </select>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">时间</label>
         <div class="col-sm-5">
-            <input type="text" name="usertime" id="datetimepicker" class="form-control" value="{$data.usertime}" placeholder="请输入时间">
+            <input type="text" name="usertime" id="datetimepicker" class="form-control" value="" placeholder="请输入时间">
         </div>
     </div>
     <input type="hidden" id="dtp_input1" value="" /><br/>
     </div>
 
 
-    <input type="hidden" name="userid" value="{$data.userid}">
-
     <p align="center"><input type="reset" class="btn btn-default" value="还原数据">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-        <input class="btn btn-default" type="submit" value="更新数据"></p>
+        <input class="btn btn-default" type="submit" value="添加数据"></p>
 </form>
 </body>
 </html>

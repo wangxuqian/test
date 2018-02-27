@@ -28,7 +28,7 @@ class user extends Controller {
 //----------------------------------查询
 //$arr=Db::table('oa_user')->select();
 //$arr2=Db::name('user')->limit(3,3)->select();
-//$arr3=Db::name('user')->order('RAND()')->limit(3)->select();
+//$arr3=Db::name('user')->order('RAND()')->limit(3)->select();//随机取出三条
 //$arr4=Db::name('user')->value('user_pass');
 //$arr5=Db::name('user')->column('user_pass','user_id');
 //$arr6=Db::name('user')->column('*');
@@ -44,6 +44,7 @@ class user extends Controller {
 
 
 //$max=Db::table('oa_user')->max('user_score');
+        //同理  Max  avg   min    sum
 
 
 //Db::table('oa_user')->whereTime( `user_time`, 'BETWEEN ', ['2013-1-1','2017-1-1'])->select();
@@ -56,7 +57,7 @@ return $this->fetch('hellow',['name'=>'thinkphp']);
 	}
 	public function show(){
 	    //分页显示
-        $list = Db::table('user_test')->paginate(3);
+        $list = Db::table('oa_user')->alias('u')->join('oa_dep d','u.dep_id=d.dep_id')->paginate(3);
         //翻页条
         $page = $list->render();
         //分配数据
@@ -64,13 +65,10 @@ return $this->fetch('hellow',['name'=>'thinkphp']);
         $this->assign('page', $page);
 	     return $this->fetch();
     }
-
-
-
     public function delete(Request $request){
 	    $id=$request->param('id');
         try{
-            $res=Db::table('user_test')->delete($id);
+            $res=Db::table('oa_user')->delete($id);
         }catch(\Exception $e){
             $this->error($e.'删除失败','show');
          }
@@ -80,11 +78,11 @@ return $this->fetch('hellow',['name'=>'thinkphp']);
       public function edit(){
 	    if(empty($_POST)){
 	        $id=Request::instance()->param('id');
-	        $data=Db::table('user_test')->find($id);
+	        $data=Db::table('oa_user')->find($id);
 	        $this->assign('data',$data);
 	        return  $this->fetch();
 	        }else{
-            $res=Db::table('user_test')->update($_POST);
+            $res=Db::table('oa_user')->update($_POST);
             if($res>0){
                 $this->success('更新成功','show');
             }else{
@@ -96,20 +94,41 @@ return $this->fetch('hellow',['name'=>'thinkphp']);
 	    if(empty($_POST)){
 	       return $this->fetch();
         }else {
-            $count=Db::table('user_test')->where($_POST)->count();
+            $count=Db::table('oa_user')->where($_POST)->count();
           if($count==1){
-              $id=Db::table('user_test')->field('userid')->where($_POST)->find();
+              $id=Db::table('oa_user')->field('userid')->where($_POST)->find();
               Session::set('id',$id['userid']);
               Session::set('username',$request->post('username'));
               $this->success('登陆成功','show');
           }else{
-              $this->error('该账户不存在');
+               $this->error('该账户不存在');
           }
             }
       }
     public function uploadd(){
 	       return $this->fetch();
 	}
+	public function phoadd(){
+	    $id=Request::instance()->param('id');
+	    $this->assign('id',$id);
+        return $this->fetch();
+    }
+    public function phoadddo(){
+
+                $file = Request::instance()->file('pho');
+                $arr['id']=Request::instance()->post('id');
+            if($file){
+            $info = $file->move(ROOT_PATH .'public/uploads');
+            if($info){
+                // 成功上传后 获取上传信息
+                // 输出 jpg
+                echo $info->getExtension();
+            }else{
+                // 上传失败获取错误信息
+                echo $file->getError();
+            }
+        }
+    }
 //	public function uploaddo(){
 //        $file = Request::instance()->file('pho');
 //        if($file){
@@ -131,6 +150,7 @@ public function uploaddo(){
         // 移动到框架应用根目录/public/uploads/ 目录下
             $info = $file->validate(['size'=>200000,'ext'=>'jpg,png,gif'])->move(ROOT_PATH .'public/uploads');
         if($info){
+            $afectrows=Db::name('oa_user')->update(array('user_name'=>'张三','user_pass'=>'123'));
             // 成功上传后 获取上传信息
             // 输出 jpg
             echo 1;
@@ -138,6 +158,19 @@ public function uploaddo(){
         }else{
             // 上传失败获取错误信息
            $this->error( $file->getError());
+        }
+    }
+}
+public function add(){
+    if(empty($_POST)){
+        return  $this->fetch();
+    }else{
+        $user=new \app\index\Model\User();
+        $res=$user->save(Request::instance()->post());
+        if($res>0){
+            $this->success('添加成功','show');
+        }else{
+            $this->error('添加失败','show');
         }
     }
 }

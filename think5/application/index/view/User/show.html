@@ -13,7 +13,9 @@
     <th>姓名</th>
     <th>密码</th>
     <th>成绩</th>
+    <th>所属部门</th>
     <th>注册时间</th>
+    <th>上传头像</th>
     <th>操作</th>
     </tr>
     {volist name="data" id="vo"}
@@ -22,11 +24,22 @@
         <th>{$vo.username}</th>
         <th>{$vo.userpass}</th>
         <th>{$vo.userscore}</th>
+        <th>{$vo.dep_name}</th>
         <th>{$vo.usertime}</th>
-        <th><a href="{:url('edit',['id'=>$vo['userid']])}">编辑</a><a href="{:url('delete',['id'=>$vo['userid']])}">删除</a></th>
+        <th><a href="{:url('phoadd',['id'=>$vo['userid']])}">上传头像</a></th>
+        <th><a href="{:url('edit',['id'=>$vo['userid']])}">编辑</a>
+            <a href="{:url('delete',['id'=>$vo['userid']])}">删除</a></th>
     </tr>
     {/volist}
 </table>
+<a href="{:url('uploadd')}">多头像上传</a>
+<a href="{:url('add')}">添加数据</a>
 {$page}
 </body>
 </html>
+<script>
+var arr = new Array();
+$("img").each(function(index){
+arr.push($(this).attr("src"));
+});
+</script>

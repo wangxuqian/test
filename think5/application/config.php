@@ -238,4 +238,5 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
+    define('KKK', '123456hgfds#￥%……&546。、')
 ];
